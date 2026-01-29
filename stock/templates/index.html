@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Control de Inventario</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; display: flex; justify-content: center; }
+        .contenedor { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 400px; }
+        form { display: flex; flex-direction: column; gap: 10px; }
+        input, select, button { padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        th, td { border-bottom: 1px solid #eee; padding: 10px; text-align: left; }
+    </style>
+</head>
+<body>
+
+<div class="contenedor">
+    <h2>📦 Control de Inventario</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label>Producto:</label>
+        <select name="producto_id" required>
+            {% for p in productos %}
+                <option value="{{ p.id }}">{{ p.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Tipo:</label>
+        <select name="tipo" required>
+            <option value="ENTRADA">Entrada (+)</option>
+            <option value="SALIDA">Salida (-)</option>
+        </select>
+
+        <label>Cantidad:</label>
+        <input type="number" name="cantidad" required>
+
+        <button type="submit">Guardar Movimiento</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in productos %}
+            <tr>
+                <td>{{ p.nombre }}</td>
+                <td>{{ p.cantidad_total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
