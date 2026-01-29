@@ -12,8 +12,8 @@ class Producto(models.Model):
 class Movimiento(models.Model):
     # Solo permitimos dos opciones
     OPCIONES = (
-        ('SUMAR', 'Entrada (+)'),
-        ('RESTAR', 'Salida (-)'),
+        ('ENTRADA', 'Entrada (+)'),
+        ('SALIDA', 'Salida (-)'),
     )
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=10, choices=OPCIONES)
@@ -21,7 +21,7 @@ class Movimiento(models.Model):
 
     def save(self, *args, **kwargs):
         # Esta es la "magia" que suma o resta sola
-        if self.tipo == 'SUMAR':
+        if self.tipo == 'ENTRADA':
             self.producto.cantidad_actual += self.cantidad
         else:
             self.producto.cantidad_actual -= self.cantidad
